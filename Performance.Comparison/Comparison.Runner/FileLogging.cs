@@ -1,4 +1,7 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using BenchmarkDotNet.Attributes;
 using log4net;
 using log4net.Appender;
 using log4net.Core;
@@ -14,10 +17,11 @@ namespace Comparison.Runner
 {
     [ClrJob(baseline: true)]
     [RPlotExporter, RankColumn]
-    public class NoOpLogging
+    public class FileLogging
     {
         private Logger _nlog;
         private ILog _log4Net;
+        private string _logsFolder;
 
         [Params(1000)]
         public int _intArgument;
@@ -28,21 +32,36 @@ namespace Comparison.Runner
         [GlobalSetup]
         public void Setup()
         {
+            var logsFolder = $"logs_{DateTime.UtcNow.Ticks}_{Process.GetCurrentProcess().Id}";
+
+            if (Directory.Exists(logsFolder))
+            {
+                Directory.Delete(logsFolder, true);
+            }
+
+            Directory.CreateDirectory(logsFolder);
+
+            var info = new DirectoryInfo(logsFolder);
+
+            StartClass.Folders.Add(info);
+
+            _logsFolder = new DirectoryInfo(logsFolder).FullName;
+
             _log4Net = GetLog4NetLogger();
             _nlog = GetNLogLogger();
         }
 
         [Benchmark]
-        public void Log4NetNoParams() => _log4Net.DebugFormat("test");
+        public void Log4NetNoParams() => _log4Net.InfoFormat("test");
 
         [Benchmark]
-        public void Log4NetSingleReferenceParam() => _log4Net.DebugFormat("test {0}", _stringArgument);
+        public void Log4NetSingleReferenceParam() => _log4Net.InfoFormat("test {0}", _stringArgument);
 
         [Benchmark]
-        public void Log4NetSingleValueParam() => _log4Net.DebugFormat("test {0}", _intArgument);
+        public void Log4NetSingleValueParam() => _log4Net.InfoFormat("test {0}", _intArgument);
 
         [Benchmark]
-        public void Log4NetMultipleReferencesParam() => _log4Net.DebugFormat(
+        public void Log4NetMultipleReferencesParam() => _log4Net.InfoFormat(
             "test {0} {1} {2} {3} {4} {5} {6} {7} {8}",
             _stringArgument,
             _stringArgument,
@@ -55,7 +74,7 @@ namespace Comparison.Runner
             _stringArgument);
 
         [Benchmark]
-        public void Log4NetMultipleValuesParam() => _log4Net.DebugFormat(
+        public void Log4NetMultipleValuesParam() => _log4Net.InfoFormat(
             "test {0} {1} {2} {3} {4} {5} {6} {7} {8}",
             _intArgument,
             _intArgument,
@@ -68,16 +87,16 @@ namespace Comparison.Runner
             _intArgument);
 
         [Benchmark]
-        public void NLogNetNoParams() => _nlog.Debug("test");
+        public void NLogNetNoParams() => _nlog.Info("test");
 
         [Benchmark]
-        public void NLogNetSingleReferenceParam() => _nlog.Debug("test {0}", _stringArgument);
+        public void NLogNetSingleReferenceParam() => _nlog.Info("test {0}", _stringArgument);
 
         [Benchmark]
-        public void NLogNetSingleValueParam() => _nlog.Debug("test {0}", _intArgument);
+        public void NLogNetSingleValueParam() => _nlog.Info("test {0}", _intArgument);
 
         [Benchmark]
-        public void NLogNetMultipleReferencesParam() => _nlog.Debug(
+        public void NLogNetMultipleReferencesParam() => _nlog.Info(
             "test {0} {1} {2} {3} {4} {5} {6} {7} {8}",
             _stringArgument,
             _stringArgument,
@@ -90,7 +109,7 @@ namespace Comparison.Runner
             _stringArgument);
 
         [Benchmark]
-        public void NLogNetMultipleValuesParam() => _nlog.Debug(
+        public void NLogNetMultipleValuesParam() => _nlog.Info(
             "test {0} {1} {2} {3} {4} {5} {6} {7} {8}",
             _intArgument,
             _intArgument,
@@ -102,18 +121,18 @@ namespace Comparison.Runner
             _intArgument,
             _intArgument);
 
-        private static Logger GetNLogLogger()
+        private Logger GetNLogLogger()
         {
             // from https://github.com/nlog/NLog/wiki/Configuration-API
             var config = new LoggingConfiguration();
-            
+
             var fileTarget = new FileTarget("target2")
             {
-                FileName = "${basedir}/file.txt",
-                Layout = "${longdate} ${level} ${message}  ${exception}"
+                FileName = $"{_logsFolder}/nlog.txt",
+                Layout = "${longdate} ${threadid} ${logger} ${level} ${message}  ${exception}"
             };
             config.AddTarget(fileTarget);
-            
+
             config.AddRuleForOneLevel(LogLevel.Info, fileTarget); // only errors to file
 
             NLog.LogManager.Configuration = config;
@@ -121,7 +140,7 @@ namespace Comparison.Runner
             return NLog.LogManager.GetCurrentClassLogger();
         }
 
-        private static ILog GetLog4NetLogger()
+        private ILog GetLog4NetLogger()
         {
             // from https://stackoverflow.com/questions/16336917/can-you-configure-log4net-in-code-instead-of-using-a-config-file
             var hierarchy = (Hierarchy)LogManager.GetRepository();
@@ -132,15 +151,13 @@ namespace Comparison.Runner
 
             var roller = new RollingFileAppender();
             roller.AppendToFile = false;
-            roller.File = @"Logs\EventLog.txt";
+            roller.File = $"{_logsFolder}/log4net.txt";
             roller.Layout = patternLayout;
-            roller.MaxSizeRollBackups = 5;
-            roller.MaximumFileSize = "1GB";
-            roller.RollingStyle = RollingFileAppender.RollingMode.Size;
+            roller.RollingStyle = RollingFileAppender.RollingMode.Once;
             roller.StaticLogFileName = true;
             roller.ActivateOptions();
             hierarchy.Root.AddAppender(roller);
-            
+
             hierarchy.Root.Level = Level.Info;
             hierarchy.Configured = true;
 
