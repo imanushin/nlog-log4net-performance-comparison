@@ -1,13 +1,16 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
+using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
 
 namespace Comparison.Runner
 {
     internal static class StartClass
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
-            //var summary = BenchmarkRunner.Run<Md5VsSha256>();
+            BenchmarkRunner.Run<EmptyLoggers>();
         }
     }
 }
