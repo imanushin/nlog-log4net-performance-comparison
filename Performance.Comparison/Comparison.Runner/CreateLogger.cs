@@ -28,19 +28,31 @@ namespace Comparison.Runner
             ConfigureNLog();
         }
 
-        [Benchmark(OperationsPerInvoke = 1)]
-        public ILog CreateLog4Net() => LogManager.GetLogger(Interlocked.Increment(ref _index).ToString());
+        [Benchmark]
+        public void CreateLog4Net()
+        {
+            for (var i = 0; i < 1024 * 256; i++)
+            {
+                LogManager.GetLogger(Interlocked.Increment(ref _index).ToString());
+            }
+        }
 
-        [Benchmark(OperationsPerInvoke = 1)]
-        public Logger CreateNLog() => NLog.LogManager.GetLogger(Interlocked.Increment(ref _index).ToString());
+        [Benchmark]
+        public void CreateNLog()
+        {
+            for (var i = 0; i < 1024 * 256; i++)
+            {
+                NLog.LogManager.GetLogger(Interlocked.Increment(ref _index).ToString());
+            }
+        }
 
         [IterationCleanup]
-        public void IterationCleanup()
+        public void Cleanup()
         {
+            _index = 0;
+
             ConfigureLog4Net();
             ConfigureNLog();
-
-            _index = 0;
         }
 
         private static void ConfigureNLog()
@@ -58,6 +70,8 @@ namespace Comparison.Runner
             config.AddRuleForOneLevel(LogLevel.Info, fileTarget); // only errors to file
 
             NLog.LogManager.Configuration = config;
+
+            NLog.LogManager.GetCurrentClassLogger();
         }
 
         private static void ConfigureLog4Net()
@@ -85,6 +99,8 @@ namespace Comparison.Runner
 
             hierarchy.Root.Level = Level.Info;
             hierarchy.Configured = true;
+
+            LogManager.GetLogger(typeof(CreateLogger));
         }
     }
 }

@@ -145,6 +145,9 @@ namespace Comparison.Runner
             // from https://stackoverflow.com/questions/16336917/can-you-configure-log4net-in-code-instead-of-using-a-config-file
             var hierarchy = (Hierarchy)LogManager.GetRepository();
 
+            hierarchy.ResetConfiguration();
+            hierarchy.Clear();
+
             var patternLayout = new PatternLayout();
             patternLayout.ConversionPattern = "%date [%thread] %-5level %logger - %message%newline";
             patternLayout.ActivateOptions();
