@@ -99,10 +99,8 @@ namespace Comparison.Runner
             };
             config.AddTarget(asyncWrapper);
 
-            // Step 3. Define rules
-            config.AddRuleForOneLevel(LogLevel.Info, asyncWrapper); // only errors to file
+            config.AddRuleForOneLevel(LogLevel.Info, asyncWrapper);
 
-            // Step 4. Activate the configuration
             NLog.LogManager.Configuration = config;
 
             return NLog.LogManager.GetCurrentClassLogger();

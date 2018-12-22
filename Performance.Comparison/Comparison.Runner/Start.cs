@@ -12,7 +12,8 @@ namespace Comparison.Runner
         private static void Main()
         {
             //BenchmarkRunner.Run<NoOpLogging>();
-           BenchmarkRunner.Run<AsyncFileLogging>();
+           BenchmarkRunner.Run<CreateLogger>();
+           //BenchmarkRunner.Run<AsyncFileLogging>();
            //BenchmarkRunner.Run<FileLogging>();
 
             LogManager.Shutdown();
