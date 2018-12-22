@@ -10,7 +10,7 @@ namespace Comparison.Runner
     {
         private static void Main()
         {
-            BenchmarkRunner.Run<EmptyLoggers>();
+            BenchmarkRunner.Run<NoOpLogging>();
         }
     }
 }
