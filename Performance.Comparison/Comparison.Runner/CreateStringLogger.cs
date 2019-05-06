@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using BenchmarkDotNet.Attributes;
-using log4net;
 using log4net.Appender;
 using log4net.Core;
 using log4net.Layout;
@@ -8,49 +7,38 @@ using log4net.Repository.Hierarchy;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
-using Logger = NLog.Logger;
 using LogManager = log4net.LogManager;
 
 namespace Comparison.Runner
 {
     [ClrJob(baseline: true)]
     [RPlotExporter, RankColumn]
-    public class CreateLogger
+    public class CreateStringLogger
     {
-        private int _index;
+        private static int _stringLogIndex;
 
         [GlobalSetup]
         public void Setup()
         {
-            _index = 0;
-
             ConfigureLog4Net();
             ConfigureNLog();
         }
 
         [Benchmark]
-        public void CreateLog4Net()
+        public object CreateLog4NetFromString()
         {
-            for (var i = 0; i < 1024 * 256; i++)
-            {
-                LogManager.GetLogger(Interlocked.Increment(ref _index).ToString());
-            }
+            return LogManager.GetLogger("my-logger_" + Interlocked.Increment(ref _stringLogIndex));
         }
 
         [Benchmark]
-        public void CreateNLog()
+        public object CreateNLogFromString()
         {
-            for (var i = 0; i < 1024 * 256; i++)
-            {
-                NLog.LogManager.GetLogger(Interlocked.Increment(ref _index).ToString());
-            }
+            return NLog.LogManager.GetLogger("my-logger_" + Interlocked.Increment(ref _stringLogIndex));
         }
 
         [IterationCleanup]
         public void Cleanup()
         {
-            _index = 0;
-
             ConfigureLog4Net();
             ConfigureNLog();
         }
@@ -77,7 +65,7 @@ namespace Comparison.Runner
         private static void ConfigureLog4Net()
         {
             // from https://stackoverflow.com/questions/16336917/can-you-configure-log4net-in-code-instead-of-using-a-config-file
-            var hierarchy = (Hierarchy)LogManager.GetRepository();
+            var hierarchy = (Hierarchy) LogManager.GetRepository();
 
             hierarchy.ResetConfiguration();
             hierarchy.Clear();
@@ -100,7 +88,7 @@ namespace Comparison.Runner
             hierarchy.Root.Level = Level.Info;
             hierarchy.Configured = true;
 
-            LogManager.GetLogger(typeof(CreateLogger));
+            LogManager.GetLogger(typeof(CreateTypeLogger));
         }
     }
 }

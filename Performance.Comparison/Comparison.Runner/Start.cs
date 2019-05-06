@@ -1,5 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.IO;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Environments;
+using BenchmarkDotNet.Horology;
+using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 using log4net;
 
@@ -15,11 +19,9 @@ namespace Comparison.Runner
             BenchmarkRunner.Run<FileLogging>();
             BenchmarkRunner.Run<AsyncFileLogging>();
 
-            //
-            //BenchmarkRunner.Run<CreateLogger>();
-            //
-            //BenchmarkRunner.Run<FileLogging>();
-
+            BenchmarkRunner.Run<CreateTypeLogger>();
+            BenchmarkRunner.Run<CreateStringLogger>();
+            
             LogManager.Shutdown();
             NLog.LogManager.Configuration = null;
 
