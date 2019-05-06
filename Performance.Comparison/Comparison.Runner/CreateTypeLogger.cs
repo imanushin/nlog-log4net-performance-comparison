@@ -10,9 +10,7 @@ using LogManager = log4net.LogManager;
 
 namespace Comparison.Runner
 {
-    [ClrJob(baseline: true)]
-    [RPlotExporter, RankColumn]
-    public class CreateTypeLogger
+    public class CreateTypeLogger : BaseTest
     {
         [GlobalSetup]
         public void Setup()

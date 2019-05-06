@@ -11,9 +11,7 @@ using LogManager = log4net.LogManager;
 
 namespace Comparison.Runner
 {
-    [ClrJob(baseline: true)]
-    [RPlotExporter, RankColumn]
-    public class CreateStringLogger
+    public class CreateStringLogger : BaseTest
     {
         private static int _stringLogIndex;
 

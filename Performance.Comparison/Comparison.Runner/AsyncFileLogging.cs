@@ -10,9 +10,7 @@ using Logger = NLog.Logger;
 
 namespace Comparison.Runner
 {
-    [ClrJob(baseline: true)]
-    [RPlotExporter, RankColumn]
-    public class AsyncFileLogging
+    public class AsyncFileLogging : BaseTest
     {
         private Logger _nlog;
         private string _logsFolder;

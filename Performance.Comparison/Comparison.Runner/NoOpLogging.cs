@@ -12,9 +12,7 @@ using LogManager = log4net.LogManager;
 
 namespace Comparison.Runner
 {
-    [ClrJob(baseline: true)]
-    [RPlotExporter, RankColumn]
-    public class NoOpLogging
+    public class NoOpLogging : BaseTest
     {
         private Logger _nlog;
         private ILog _log4Net;

@@ -15,13 +15,22 @@ namespace Comparison.Runner
 
         private static void Main()
         {
-            BenchmarkRunner.Run<NoOpLogging>();
-            BenchmarkRunner.Run<FileLogging>();
-            BenchmarkRunner.Run<AsyncFileLogging>();
+            //BenchmarkRunner.Run<NoOpLogging>();
+            //BenchmarkRunner.Run<FileLogging>();
+            //BenchmarkRunner.Run<AsyncFileLogging>();
 
-            BenchmarkRunner.Run<CreateTypeLogger>();
-            BenchmarkRunner.Run<CreateStringLogger>();
-            
+            //BenchmarkRunner.Run<CreateTypeLogger>();
+            //BenchmarkRunner.Run<CreateStringLogger>();
+
+            if (true)
+            {
+                BenchmarkRunner.Run(typeof(StartClass).Assembly);
+            }
+            else
+            {
+                BenchmarkRunner.Run<CreateStringLogger>();
+            }
+
             LogManager.Shutdown();
             NLog.LogManager.Configuration = null;
 
