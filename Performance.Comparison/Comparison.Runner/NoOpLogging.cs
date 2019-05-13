@@ -1,4 +1,7 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using BenchmarkDotNet.Attributes;
 using log4net;
 using log4net.Appender;
 using log4net.Core;
@@ -20,12 +23,16 @@ namespace Comparison.Runner
         [Params(1000)]
         public int _intArgument;
 
-        [Params("32197463298746")]
+        [Params("ltfdmhiubtc")]
         public string _stringArgument;
+
+        private static string _logsFolder;
 
         [GlobalSetup]
         public void Setup()
         {
+            _logsFolder = CreateLogFolder();
+
             _log4Net = GetLog4NetLogger();
             _nlog = GetNLogLogger();
         }
@@ -105,12 +112,8 @@ namespace Comparison.Runner
             // from https://github.com/nlog/NLog/wiki/Configuration-API
 
             var config = new LoggingConfiguration();
-            
-            var fileTarget = new FileTarget("target2")
-            {
-                FileName = "${basedir}/file.txt",
-                Layout = "${longdate} ${level} ${message}  ${exception}"
-            };
+
+            var fileTarget = CreateNLogAppender(_logsFolder);
             config.AddTarget(fileTarget);
             
             config.AddRuleForOneLevel(LogLevel.Info, fileTarget); // only errors to file

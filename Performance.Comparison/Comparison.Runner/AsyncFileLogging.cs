@@ -17,8 +17,10 @@ namespace Comparison.Runner
         [Params(1000)]
         public int _intArgument;
 
-        [Params("32197463298746")]
+        [Params("ltfdmhiubtc")]
         public string _stringArgument;
+
+        private static string _logsFolder;
 
         [GlobalSetup]
         public void Setup()
@@ -32,9 +34,7 @@ namespace Comparison.Runner
 
             Directory.CreateDirectory(logsFolder);
 
-            var info = new DirectoryInfo(logsFolder);
-
-            StartClass.Folders.Add(info);
+            _logsFolder = CreateLogFolder();
 
             _nlog = GetNLogLogger();
         }
@@ -79,11 +79,7 @@ namespace Comparison.Runner
             // from https://github.com/nlog/NLog/wiki/Configuration-API
             var config = new LoggingConfiguration();
 
-            var fileTarget = new FileTarget("target2")
-            {
-                FileName = "${basedir}/file-async.txt",
-                Layout = "${longdate} ${threadid} ${logger} ${level} ${message} ${exception}"
-            };
+            var fileTarget = CreateNLogAppender(_logsFolder);
 
             var asyncWrapper = new AsyncTargetWrapper(fileTarget)
             {

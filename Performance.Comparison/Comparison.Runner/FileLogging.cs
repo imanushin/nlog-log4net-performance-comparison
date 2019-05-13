@@ -25,26 +25,13 @@ namespace Comparison.Runner
         [Params(1000)]
         public int _intArgument;
 
-        [Params("32197463298746")]
+        [Params("ltfdmhiubtc")]
         public string _stringArgument;
 
         [GlobalSetup]
         public void Setup()
         {
-            var logsFolder = $"logs_{DateTime.UtcNow.Ticks}_{Process.GetCurrentProcess().Id}";
-
-            if (Directory.Exists(logsFolder))
-            {
-                Directory.Delete(logsFolder, true);
-            }
-
-            Directory.CreateDirectory(logsFolder);
-
-            var info = new DirectoryInfo(logsFolder);
-
-            StartClass.Folders.Add(info);
-
-            _logsFolder = new DirectoryInfo(logsFolder).FullName;
+            _logsFolder = CreateLogFolder();
 
             _log4Net = GetLog4NetLogger();
             _nlog = GetNLogLogger();
@@ -125,16 +112,7 @@ namespace Comparison.Runner
             // from https://github.com/nlog/NLog/wiki/Configuration-API
             var config = new LoggingConfiguration();
 
-            var fileTarget = new FileTarget("target")
-            {
-                FileName = $"{_logsFolder}/nlog.txt",
-                ArchiveAboveSize = 128 * 1000 * 1000,
-                MaxArchiveFiles = 16,
-                AutoFlush = true,
-                ConcurrentWrites = false,
-                KeepFileOpen = true,
-                Layout = "${longdate} ${threadid} ${logger} ${level} ${message}  ${exception}"
-            };
+            var fileTarget = CreateNLogAppender(_logsFolder);
             config.AddTarget(fileTarget);
 
             config.AddRuleForOneLevel(LogLevel.Info, fileTarget);
