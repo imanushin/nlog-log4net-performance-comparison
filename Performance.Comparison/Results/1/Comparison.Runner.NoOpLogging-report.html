@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Comparison.Runner.NoOpLogging-20190513-013442</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.5, OS=Windows 10.0.17763.475 (1809/October2018Update/Redstone5)
+Intel Core i5-6600K CPU 3.50GHz (Skylake), 1 CPU, 4 logical and 4 physical cores
+  [Host] : .NET Framework 4.7.2 (CLR 4.0.30319.42000), 64bit RyuJIT-v4.7.3362.0
+  Clr    : .NET Framework 4.7.2 (CLR 4.0.30319.42000), 64bit RyuJIT-v4.7.3362.0
+</code></pre>
+<pre><code>Job=Clr  Runtime=Clr  
+</code></pre>
+
+<table>
+<thead><tr><th>                  Method</th><th>_intArgument</th><th>_stringArgument</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Ratio</th><th>Rank</th>
+</tr>
+</thead><tbody><tr><td>Log4NetNoParams</td><td>1000</td><td>ltfdmhiubtc</td><td>11.946 ns</td><td>0.0213 ns</td><td>0.0200 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>Log4NetSingleReferenceParam</td><td>1000</td><td>ltfdmhiubtc</td><td>11.208 ns</td><td>0.0252 ns</td><td>0.0236 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>Log4NetSingleValueParam</td><td>1000</td><td>ltfdmhiubtc</td><td>12.449 ns</td><td>0.0159 ns</td><td>0.0141 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>Log4NetMultipleReferencesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>47.585 ns</td><td>0.0637 ns</td><td>0.0564 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>Log4NetMultipleValuesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>61.371 ns</td><td>0.0972 ns</td><td>0.0909 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NLogNetNoParams</td><td>1000</td><td>ltfdmhiubtc</td><td>1.825 ns</td><td>0.0033 ns</td><td>0.0026 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NLogNetSingleReferenceParam</td><td>1000</td><td>ltfdmhiubtc</td><td>2.062 ns</td><td>0.0034 ns</td><td>0.0031 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NLogNetSingleValueParam</td><td>1000</td><td>ltfdmhiubtc</td><td>2.003 ns</td><td>0.0025 ns</td><td>0.0024 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NLogNetMultipleReferencesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>35.744 ns</td><td>0.0405 ns</td><td>0.0379 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NLogNetMultipleValuesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>47.731 ns</td><td>0.0932 ns</td><td>0.0872 ns</td><td>1.00</td><td>1</td>
+</tr></tbody></table>
+</body>
+</html>

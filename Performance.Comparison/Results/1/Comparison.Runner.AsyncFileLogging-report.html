@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Comparison.Runner.AsyncFileLogging-20190513-011937</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.5, OS=Windows 10.0.17763.475 (1809/October2018Update/Redstone5)
+Intel Core i5-6600K CPU 3.50GHz (Skylake), 1 CPU, 4 logical and 4 physical cores
+  [Host] : .NET Framework 4.7.2 (CLR 4.0.30319.42000), 64bit RyuJIT-v4.7.3362.0
+  Clr    : .NET Framework 4.7.2 (CLR 4.0.30319.42000), 64bit RyuJIT-v4.7.3362.0
+</code></pre>
+<pre><code>Job=Clr  Runtime=Clr  
+</code></pre>
+
+<table>
+<thead><tr><th>                  Method</th><th>_intArgument</th><th>_stringArgument</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Ratio</th><th>Rank</th>
+</tr>
+</thead><tbody><tr><td>NLogNetNoParams</td><td>1000</td><td>ltfdmhiubtc</td><td>1.845 us</td><td>0.0369 us</td><td>0.0939 us</td><td>1.00</td><td>1</td>
+</tr><tr><td>NLogNetSingleReferenceParam</td><td>1000</td><td>ltfdmhiubtc</td><td>1.948 us</td><td>0.0414 us</td><td>0.0935 us</td><td>1.00</td><td>1</td>
+</tr><tr><td>NLogNetSingleValueParam</td><td>1000</td><td>ltfdmhiubtc</td><td>2.120 us</td><td>0.0421 us</td><td>0.0967 us</td><td>1.00</td><td>1</td>
+</tr><tr><td>NLogNetMultipleReferencesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>2.975 us</td><td>0.0589 us</td><td>0.1148 us</td><td>1.00</td><td>1</td>
+</tr><tr><td>NLogNetMultipleValuesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>3.515 us</td><td>0.0702 us</td><td>0.1480 us</td><td>1.00</td><td>1</td>
+</tr></tbody></table>
+</body>
+</html>
