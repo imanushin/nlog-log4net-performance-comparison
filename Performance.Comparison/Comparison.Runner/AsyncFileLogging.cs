@@ -13,7 +13,6 @@ namespace Comparison.Runner
     public class AsyncFileLogging : BaseTest
     {
         private Logger _nlog;
-        private string _logsFolder;
 
         [Params(1000)]
         public int _intArgument;
@@ -36,8 +35,6 @@ namespace Comparison.Runner
             var info = new DirectoryInfo(logsFolder);
 
             StartClass.Folders.Add(info);
-
-            _logsFolder = new DirectoryInfo(logsFolder).FullName;
 
             _nlog = GetNLogLogger();
         }
@@ -92,16 +89,16 @@ namespace Comparison.Runner
             {
                 Name = "async",
                 OverflowAction = AsyncTargetWrapperOverflowAction.Block,
-                BatchSize = 1,
+                BatchSize = 4096,
                 FullBatchSizeWriteLimit = 128
             };
             config.AddTarget(asyncWrapper);
 
             config.AddRuleForOneLevel(LogLevel.Info, asyncWrapper);
 
-            NLog.LogManager.Configuration = config;
+            LogManager.Configuration = config;
 
-            return NLog.LogManager.GetCurrentClassLogger();
+            return LogManager.GetCurrentClassLogger();
         }
     }
 }

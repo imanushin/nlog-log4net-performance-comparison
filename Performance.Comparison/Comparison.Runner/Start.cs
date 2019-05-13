@@ -1,9 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using System.IO;
-using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Environments;
-using BenchmarkDotNet.Horology;
-using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 using log4net;
 
@@ -22,13 +18,13 @@ namespace Comparison.Runner
             //BenchmarkRunner.Run<CreateTypeLogger>();
             //BenchmarkRunner.Run<CreateStringLogger>();
 
-            if (true)
+            if (false)
             {
                 BenchmarkRunner.Run(typeof(StartClass).Assembly);
             }
             else
             {
-                BenchmarkRunner.Run<CreateStringLogger>();
+                BenchmarkRunner.Run<FileLogging>();
             }
 
             LogManager.Shutdown();

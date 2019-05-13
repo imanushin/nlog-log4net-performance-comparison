@@ -4,6 +4,7 @@ using System.IO;
 using BenchmarkDotNet.Attributes;
 using log4net;
 using log4net.Appender;
+using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
 using log4net.Repository.Hierarchy;
@@ -52,7 +53,7 @@ namespace Comparison.Runner
         [Benchmark]
         public void Log4NetNoParams() => _log4Net.InfoFormat("test");
 
-        [Benchmark]
+       [Benchmark]
         public void Log4NetSingleReferenceParam() => _log4Net.InfoFormat("test {0}", _stringArgument);
 
         [Benchmark]
@@ -124,14 +125,19 @@ namespace Comparison.Runner
             // from https://github.com/nlog/NLog/wiki/Configuration-API
             var config = new LoggingConfiguration();
 
-            var fileTarget = new FileTarget("target2")
+            var fileTarget = new FileTarget("target")
             {
                 FileName = $"{_logsFolder}/nlog.txt",
+                ArchiveAboveSize = 128 * 1000 * 1000,
+                MaxArchiveFiles = 16,
+                AutoFlush = true,
+                ConcurrentWrites = false,
+                KeepFileOpen = true,
                 Layout = "${longdate} ${threadid} ${logger} ${level} ${message}  ${exception}"
             };
             config.AddTarget(fileTarget);
 
-            config.AddRuleForOneLevel(LogLevel.Info, fileTarget); // only errors to file
+            config.AddRuleForOneLevel(LogLevel.Info, fileTarget);
 
             NLog.LogManager.Configuration = config;
 
@@ -140,6 +146,8 @@ namespace Comparison.Runner
 
         private ILog GetLog4NetLogger()
         {
+            BasicConfigurator.Configure();
+
             // from https://stackoverflow.com/questions/16336917/can-you-configure-log4net-in-code-instead-of-using-a-config-file
             var hierarchy = (Hierarchy)LogManager.GetRepository();
 
@@ -147,22 +155,25 @@ namespace Comparison.Runner
             hierarchy.Clear();
 
             var patternLayout = new PatternLayout();
-            patternLayout.ConversionPattern = "%date [%thread] %-5level %logger - %message%newline";
+            patternLayout.ConversionPattern = "%date [%thread] %-5level %logger %message%newline";
             patternLayout.ActivateOptions();
 
             var roller = new RollingFileAppender();
             roller.AppendToFile = false;
             roller.File = $"{_logsFolder}/log4net.txt";
             roller.Layout = patternLayout;
+            roller.ImmediateFlush = true;
             roller.RollingStyle = RollingFileAppender.RollingMode.Once;
-            roller.StaticLogFileName = true;
+            roller.MaxFileSize = 128 * 1000 * 1000;
             roller.ActivateOptions();
+
+            hierarchy.Threshold = Level.Info;
+            hierarchy.Root.Level = Level.Info;
             hierarchy.Root.AddAppender(roller);
 
-            hierarchy.Root.Level = Level.Info;
             hierarchy.Configured = true;
-
-            return LogManager.GetLogger(typeof(NoOpLogging));
+            
+            return LogManager.GetLogger(GetType());
         }
     }
 }

@@ -6,7 +6,7 @@ using BenchmarkDotNet.Exporters.Csv;
 namespace Comparison.Runner
 {
     [ClrJob(baseline: true)]
-    [RPlotExporter,
+    [/*RPlotExporter,*/
      PlainExporter,
      CsvMeasurementsExporter,
      CsvExporter(CsvSeparator.Comma),
