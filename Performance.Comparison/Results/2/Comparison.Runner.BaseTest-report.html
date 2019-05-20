@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>Comparison.Runner.BaseTest-20190520-021041</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.5, OS=Windows 10.0.17763.503 (1809/October2018Update/Redstone5)
+Intel Core i5-6600K CPU 3.50GHz (Skylake), 1 CPU, 4 logical and 4 physical cores
+  [Host] : .NET Framework 4.7.2 (CLR 4.0.30319.42000), 64bit RyuJIT-v4.7.3416.0
+  Clr    : .NET Framework 4.7.2 (CLR 4.0.30319.42000), 64bit RyuJIT-v4.7.3416.0
+</code></pre>
+<pre><code>Job=Clr  Runtime=Clr  
+</code></pre>
+
+<table>
+<thead><tr><th>                                             Method</th><th>_intArgument</th><th>_stringArgument</th><th>    Mean</th><th>   Error</th><th>  StdDev</th><th>  Median</th><th>Ratio</th><th>Rank</th>
+</tr>
+</thead><tbody><tr><td>&#39;KeepFileOpen=true, ConcurrentWrites=false, Async=true&#39;</td><td>1000</td><td>ltfdmhiubtc</td><td>1,835.730 ns</td><td>55.3980 ns</td><td>163.3422 ns</td><td>1,791.901 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>&#39;KeepFileOpen=true, ConcurrentWrites=true, Async=true&#39;</td><td>1000</td><td>ltfdmhiubtc</td><td>1,910.814 ns</td><td>37.9116 ns</td><td>90.1008 ns</td><td>1,908.513 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>&#39;KeepFileOpen=false, ConcurrentWrites=false, Async=true&#39;</td><td>1000</td><td>ltfdmhiubtc</td><td>1,765.390 ns</td><td>34.5893 ns</td><td>33.9713 ns</td><td>1,764.598 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>&#39;KeepFileOpen=false, ConcurrentWrites=true, Async=true&#39;</td><td>1000</td><td>ltfdmhiubtc</td><td>1,834.002 ns</td><td>36.2599 ns</td><td>56.4523 ns</td><td>1,838.500 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>&#39;KeepFileOpen=true, ConcurrentWrites=false, Async=false&#39;</td><td>1000</td><td>ltfdmhiubtc</td><td>5,387.220 ns</td><td>77.9523 ns</td><td>69.1027 ns</td><td>5,376.298 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>&#39;KeepFileOpen=true, ConcurrentWrites=true, Async=false&#39;</td><td>1000</td><td>ltfdmhiubtc</td><td>11,171.048 ns</td><td>58.5253 ns</td><td>54.7446 ns</td><td>11,186.697 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>&#39;KeepFileOpen=false, ConcurrentWrites=false, Async=false&#39;</td><td>1000</td><td>ltfdmhiubtc</td><td>652,512.923 ns</td><td>8,856.6000 ns</td><td>8,284.4691 ns</td><td>650,545.605 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>&#39;KeepFileOpen=false, ConcurrentWrites=true, Async=false&#39;</td><td>1000</td><td>ltfdmhiubtc</td><td>642,003.054 ns</td><td>12,750.3183 ns</td><td>31,515.6277 ns</td><td>645,749.609 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>CreateLog4NetFromString</td><td>1000</td><td>ltfdmhiubtc</td><td>1,271.456 ns</td><td>3.9287 ns</td><td>3.4827 ns</td><td>1,271.722 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>CreateNLogFromString</td><td>1000</td><td>ltfdmhiubtc</td><td>199.004 ns</td><td>0.3101 ns</td><td>0.2901 ns</td><td>199.046 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>CreateLog4NetLogger</td><td>1000</td><td>ltfdmhiubtc</td><td>18,564.228 ns</td><td>44.6344 ns</td><td>41.7510 ns</td><td>18,564.598 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>CreateNLogTypeOfLogger</td><td>1000</td><td>ltfdmhiubtc</td><td>140,220.404 ns</td><td>188.8802 ns</td><td>176.6787 ns</td><td>140,235.303 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>CreateNLogDynamicLogger</td><td>1000</td><td>ltfdmhiubtc</td><td>115,329.549 ns</td><td>243.0537 ns</td><td>227.3526 ns</td><td>115,361.597 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>FileLoggingLog4NetNoParams</td><td>1000</td><td>ltfdmhiubtc</td><td>7,076.251 ns</td><td>41.5518 ns</td><td>38.8676 ns</td><td>7,075.394 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>FileLoggingLog4NetSingleReferenceParam</td><td>1000</td><td>ltfdmhiubtc</td><td>7,464.427 ns</td><td>36.0445 ns</td><td>33.7161 ns</td><td>7,470.789 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>FileLoggingLog4NetSingleValueParam</td><td>1000</td><td>ltfdmhiubtc</td><td>7,684.635 ns</td><td>49.2505 ns</td><td>46.0690 ns</td><td>7,693.219 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>FileLoggingLog4NetMultipleReferencesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>8,207.387 ns</td><td>79.5855 ns</td><td>74.4443 ns</td><td>8,220.897 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>FileLoggingLog4NetMultipleValuesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>8,477.657 ns</td><td>63.4105 ns</td><td>59.3143 ns</td><td>8,472.385 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>FileLoggingNLogNetNoParams</td><td>1000</td><td>ltfdmhiubtc</td><td>5,438.306 ns</td><td>42.0170 ns</td><td>37.2470 ns</td><td>5,427.805 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>FileLoggingNLogNetSingleReferenceParam</td><td>1000</td><td>ltfdmhiubtc</td><td>5,734.572 ns</td><td>46.0770 ns</td><td>40.8461 ns</td><td>5,729.974 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>FileLoggingNLogNetSingleValueParam</td><td>1000</td><td>ltfdmhiubtc</td><td>5,834.548 ns</td><td>40.4125 ns</td><td>35.8246 ns</td><td>5,838.905 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>FileLoggingNLogNetMultipleReferencesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>6,445.663 ns</td><td>57.5870 ns</td><td>53.8669 ns</td><td>6,440.509 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>FileLoggingNLogNetMultipleValuesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>6,784.489 ns</td><td>43.9255 ns</td><td>38.9388 ns</td><td>6,782.898 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NoOpLog4NetNoParams</td><td>1000</td><td>ltfdmhiubtc</td><td>11.063 ns</td><td>0.0141 ns</td><td>0.0125 ns</td><td>11.065 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NoOpLog4NetSingleReferenceParam</td><td>1000</td><td>ltfdmhiubtc</td><td>9.206 ns</td><td>0.0321 ns</td><td>0.0300 ns</td><td>9.203 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NoOpLog4NetSingleValueParam</td><td>1000</td><td>ltfdmhiubtc</td><td>11.423 ns</td><td>0.0147 ns</td><td>0.0131 ns</td><td>11.421 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NoOpLog4NetMultipleReferencesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>44.472 ns</td><td>0.0474 ns</td><td>0.0396 ns</td><td>44.475 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NoOpLog4NetMultipleValuesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>58.138 ns</td><td>0.1598 ns</td><td>0.1416 ns</td><td>58.139 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NoOpNLogNetNoParams</td><td>1000</td><td>ltfdmhiubtc</td><td>1.045 ns</td><td>0.0037 ns</td><td>0.0033 ns</td><td>1.045 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NoOpNLogNetSingleReferenceParam</td><td>1000</td><td>ltfdmhiubtc</td><td>1.994 ns</td><td>0.0033 ns</td><td>0.0028 ns</td><td>1.994 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NoOpNLogNetSingleValueParam</td><td>1000</td><td>ltfdmhiubtc</td><td>2.025 ns</td><td>0.0044 ns</td><td>0.0042 ns</td><td>2.024 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NoOpNLogNetMultipleReferencesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>34.800 ns</td><td>0.0374 ns</td><td>0.0312 ns</td><td>34.798 ns</td><td>1.00</td><td>1</td>
+</tr><tr><td>NoOpNLogNetMultipleValuesParam</td><td>1000</td><td>ltfdmhiubtc</td><td>47.509 ns</td><td>0.1199 ns</td><td>0.1063 ns</td><td>47.511 ns</td><td>1.00</td><td>1</td>
+</tr></tbody></table>
+</body>
+</html>
