@@ -20,7 +20,7 @@ using LogManager = log4net.LogManager;
 namespace Comparison.Runner
 {
     [ClrJob(baseline: true)]
-    [RPlotExporter,
+    [//RPlotExporter,
      PlainExporter,
      CsvMeasurementsExporter,
      CsvExporter(CsvSeparator.Comma),
@@ -55,7 +55,7 @@ namespace Comparison.Runner
         [Params("ltfdmhiubtc")]
         public string _stringArgument;
 
-        [IterationSetup]
+        [GlobalSetup]
         public void Setup()
         {
             _logsFolder = CreateLogFolder();
@@ -71,8 +71,6 @@ namespace Comparison.Runner
             config.AddTarget(fileTarget);
 
             config.AddRuleForOneLevel(LogLevel.Info, fileTarget, DefaultLoggerName);
-
-            NLog.LogManager.Configuration = config;
 
             _nLogSyncFile = NLog.LogManager.GetLogger(DefaultLoggerName);
 
@@ -126,8 +124,6 @@ namespace Comparison.Runner
                 FullBatchSizeWriteLimit = 128
             };
 
-
-
             _optimizedSync = NLog.LogManager.GetLogger(nameof(fileTargetOptimizedSync));
             _concurrentWritesSync = NLog.LogManager.GetLogger(nameof(fileTargetWithConcurrentWritesSync));
             _closeFileSync = NLog.LogManager.GetLogger(nameof(fileTargetWithCloseFileSync));
@@ -145,6 +141,8 @@ namespace Comparison.Runner
             config.AddRuleForOneLevel(LogLevel.Info, asyncWithConcurrentWrites, nameof(fileTargetWithConcurrentWritesAsync));
             config.AddRuleForOneLevel(LogLevel.Info, asyncWithCloseFile, nameof(fileTargetWithCloseFileAsync));
             config.AddRuleForOneLevel(LogLevel.Info, asyncWithConcurrentWritesAndCloseFile, nameof(fileTargetWithConcurrentWritesAndCloseFileAsync));
+
+            NLog.LogManager.Configuration = config;
         }
 
         private static string CreateLogFolder()
@@ -165,7 +163,7 @@ namespace Comparison.Runner
             return new DirectoryInfo(logsFolder).FullName;
         }
 
-        [IterationCleanup]
+        [GlobalCleanup]
         public void Cleanup()
         {
             LogManager.Shutdown();
@@ -179,7 +177,7 @@ namespace Comparison.Runner
             Folders.Clear();
         }
 
-        protected static FileTarget CreateNLogAppender(
+        private static FileTarget CreateNLogAppender(
             string logsFolder,
             bool concurrentWrites = false,
             bool keepFileOpen = true)
