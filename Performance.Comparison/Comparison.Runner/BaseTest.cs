@@ -96,32 +96,28 @@ namespace Comparison.Runner
             {
                 Name = nameof(fileTargetOptimizedAsync),
                 OverflowAction = AsyncTargetWrapperOverflowAction.Block,
-                BatchSize = 4096,
-                FullBatchSizeWriteLimit = 128
+                QueueLimit = 10000
             };
 
             var asyncWithConcurrentWrites = new AsyncTargetWrapper(fileTargetWithConcurrentWritesAsync)
             {
                 Name = nameof(fileTargetWithConcurrentWritesAsync),
                 OverflowAction = AsyncTargetWrapperOverflowAction.Block,
-                BatchSize = 4096,
-                FullBatchSizeWriteLimit = 128
+                QueueLimit = 10000
             };
 
             var asyncWithCloseFile = new AsyncTargetWrapper(fileTargetWithCloseFileAsync)
             {
                 Name = nameof(fileTargetWithCloseFileAsync),
                 OverflowAction = AsyncTargetWrapperOverflowAction.Block,
-                BatchSize = 4096,
-                FullBatchSizeWriteLimit = 128
+                QueueLimit = 10000
             };
 
             var asyncWithConcurrentWritesAndCloseFile = new AsyncTargetWrapper(fileTargetWithConcurrentWritesAndCloseFileAsync)
             {
                 Name = nameof(fileTargetWithConcurrentWritesAndCloseFileAsync),
                 OverflowAction = AsyncTargetWrapperOverflowAction.Block,
-                BatchSize = 4096,
-                FullBatchSizeWriteLimit = 128
+                QueueLimit = 10000
             };
 
             _optimizedSync = NLog.LogManager.GetLogger(nameof(fileTargetOptimizedSync));
